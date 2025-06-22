@@ -26,18 +26,29 @@ import (
 	"syscall"
 	"time"
 	_ "workmate-test/cmd/docs"
+	"workmate-test/internal/config"
 	httpHandler "workmate-test/internal/handler/http"
 	"workmate-test/internal/service"
 	"workmate-test/internal/task"
 )
 
 func main() {
+	configPath := os.Getenv("CONFIG_PATH")
+	if configPath == "" {
+		configPath = "config.yml"
+	}
+	cfg, cfgerr := config.LoadConfig(configPath)
+	if cfgerr != nil {
+		panic(fmt.Sprintf("failed to load config: %v", cfgerr))
+	}
+	fmt.Printf("Loaded config: %+v\n", cfg)
+
 	logger := log.NewLogfmtLogger(log.StdlibWriter{})
 	manager := task.NewTaskManager(logger)
 	svc := service.NewTaskService(manager)
 	httpSrvHandler := httpHandler.NewHTTPHandler(svc, logger)
 	srv := &http.Server{
-		Addr:    fmt.Sprintf("%s:%s", "localhost", "8080"),
+		Addr:    fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port),
 		Handler: httpSrvHandler,
 	}
 
