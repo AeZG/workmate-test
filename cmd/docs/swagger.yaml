@@ -1,0 +1,126 @@
+basePath: /api/v1
+definitions:
+  workmate-test_internal_handler_http_schemas.DeleteTaskResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  workmate-test_internal_handler_http_schemas.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  workmate-test_internal_handler_http_schemas.GetTaskResponse:
+    properties:
+      completed_at:
+        type: string
+      created_at:
+        type: string
+      elapsed_time:
+        type: string
+      id:
+        type: string
+      result:
+        type: string
+      status:
+        type: string
+    type: object
+  workmate-test_internal_handler_http_schemas.MakeTaskResponse:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: gregorydyuldin@gmail.com
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API documentation for the workmate task manager.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Task Manager API
+  version: 1.0.1
+paths:
+  /task:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes task with specified ID.
+      parameters:
+      - description: ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/workmate-test_internal_handler_http_schemas.DeleteTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/workmate-test_internal_handler_http_schemas.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/workmate-test_internal_handler_http_schemas.ErrorResponse'
+      summary: Delete task
+      tags:
+      - Task
+    get:
+      consumes:
+      - application/json
+      description: Returns all info for a specific task by ID.
+      parameters:
+      - description: ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/workmate-test_internal_handler_http_schemas.GetTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/workmate-test_internal_handler_http_schemas.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/workmate-test_internal_handler_http_schemas.ErrorResponse'
+      summary: Get task info
+      tags:
+      - Task
+    post:
+      consumes:
+      - application/json
+      description: Creates a new task.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/workmate-test_internal_handler_http_schemas.MakeTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/workmate-test_internal_handler_http_schemas.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/workmate-test_internal_handler_http_schemas.ErrorResponse'
+      summary: Create Task
+      tags:
+      - Task
+swagger: "2.0"
